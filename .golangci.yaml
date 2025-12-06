@@ -1,7 +1,28 @@
 version: "2"
 linters:
   default: all
+  disable:
+    - err113
+    - wrapcheck
+    - wsl
+    - wsl_v5
+  settings:
+    varnamelen:
+      ignore-names:
+        - c
+        - i
+        - id
+        - v
   exclusions:
+    rules:
+      - linters:
+          - gochecknoglobals
+        path: cmd
+        text: "^(agentInvocationModes|_fs|_jsonc) "
+      - linters:
+          - revive
+        path: cmd
+        text: "^(package-comments):"
     paths:
       - _test.go
 formatters:
