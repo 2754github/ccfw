@@ -39,6 +39,23 @@ The `ccfw` CLI manages Claude Code configuration files using `.ccfw/settings.jso
         └── x-reviewer.md
 ```
 
+## Install
+
+Go
+
+```sh
+go install github.com/2754github/ccfw/cmd/ccfw@latest
+```
+
+cURL
+
+```sh
+curl -sSL "https://github.com/2754github/ccfw/releases/download/v0.1.0/ccfw_Darwin_arm64.tar.gz" -o ccfw.tar.gz && tar -xzf ccfw.tar.gz && rm ccfw.tar.gz
+```
+
+> [!NOTE]
+> This example is for macOS (Apple Silicon). For details, please refer to [Releases](https://github.com/2754github/ccfw/releases).
+
 ## Policy
 
 **"Don't train, define rules."**
