@@ -7,8 +7,6 @@
 
 The `ccfw` CLI manages Claude Code configuration files using `.ccfw/settings.json` as the single source of truth! ✨
 
-<div style="display: flex; align-items: center; gap: 32px">
-
 ```json
 {
   "version": 0,
@@ -26,7 +24,7 @@ The `ccfw` CLI manages Claude Code configuration files using `.ccfw/settings.jso
 }
 ```
 
-➡️
+⬇️
 
 ```text
 .
@@ -41,10 +39,8 @@ The `ccfw` CLI manages Claude Code configuration files using `.ccfw/settings.jso
         └── x-reviewer.md
 ```
 
-</div>
-
 ## Policy
 
 **"Don't train, define rules."**
 
-Humans only maintain "AI-assisted workflows" and "Rules for the AI", while the AI itself maintains "slash-commands", "sub-agents", and "documents" based on these inputs.
+Humans only maintain "AI-assisted workflows" and "Rules for the AI", while the AI itself maintains "sub-agents", "slash-commands", and "documents" based on these inputs.
