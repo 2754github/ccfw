@@ -22,4 +22,10 @@ test: lint
 	# go clean -testcache
 	go test -cover -v ./...
 
-.PHONY: init doc format lint test
+release: test
+	@if [ -z ${tag} ]; then echo 'Usage: make release tag=vM.m.p'; exit 1; fi
+	@read -p "Release ${tag}? [y/N]: " confirm && [ "$$confirm" = 'y' ] || (echo 'Aborted!'; exit 1)
+	git tag ${tag}
+	git push origin ${tag}
+
+.PHONY: init doc format lint test release
