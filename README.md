@@ -50,7 +50,7 @@ go install github.com/2754github/ccfw/cmd/ccfw@latest
 cURL
 
 ```sh
-curl -sSL "https://github.com/2754github/ccfw/releases/download/v0.1.0/ccfw_Darwin_arm64.tar.gz" -o ccfw.tar.gz && tar -xzf ccfw.tar.gz && rm ccfw.tar.gz
+curl -sSL "https://github.com/2754github/ccfw/releases/latest/download/ccfw_Darwin_arm64.tar.gz" -o ccfw.tar.gz && tar -xzf ccfw.tar.gz && rm ccfw.tar.gz
 ```
 
 > [!NOTE]
