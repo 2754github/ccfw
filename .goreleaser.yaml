@@ -10,7 +10,9 @@ builds:
     main: ./cmd/ccfw/
 
 archives:
-  - formats:
+  - files:
+      - none*
+    formats:
       - tar.gz
     format_overrides:
       - goos: windows
