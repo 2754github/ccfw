@@ -47,3 +47,13 @@ func Write(path string, data []byte) error {
 
 	return os.WriteFile(path, data, 0o644) //nolint:gosec,mnd
 }
+
+// Remove does nothing if the file does not exist.
+func Remove(path string) error {
+	_, err := os.Stat(path)
+	if err != nil {
+		return nil //nolint:nilerr
+	}
+
+	return os.Remove(path)
+}
