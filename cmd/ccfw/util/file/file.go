@@ -5,6 +5,30 @@ import (
 	"path/filepath"
 )
 
+// List returns an empty slice if the directory does not exist.
+func List(root string) ([]string, error) {
+	paths := make([]string, 0)
+
+	_, err := os.Stat(root)
+	if err != nil {
+		return paths, nil //nolint:nilerr
+	}
+
+	err = filepath.WalkDir(root, func(path string, d os.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if !d.IsDir() {
+			paths = append(paths, path)
+		}
+
+		return nil
+	})
+
+	return paths, err
+}
+
 func Read(path string) ([]byte, error) {
 	return os.ReadFile(filepath.Clean(path))
 }
