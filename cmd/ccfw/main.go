@@ -1,19 +1,27 @@
 package main
 
 import (
-	"github.com/2754github/ccfw/cmd/ccfw/model"
+	"os"
+
+	"github.com/2754github/ccfw/cmd/ccfw/subcmd"
 )
 
 func main() {
-	settings, err := model.ReadSettings()
-	if err != nil {
-		panic(err)
+	args := os.Args[1:]
+
+	if len(args) == 0 {
+		subcmd.Init()
+		subcmd.Sync()
+
+		return
 	}
 
-	for _, agent := range settings.Agents {
-		err := model.WriteAgent(&agent)
-		if err != nil {
-			panic(err)
-		}
+	switch args[0] {
+	case "init":
+		subcmd.Init()
+	case "sync":
+		subcmd.Sync()
+	default:
+		subcmd.Help()
 	}
 }

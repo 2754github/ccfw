@@ -59,6 +59,28 @@ curl -sSL "https://github.com/2754github/ccfw/releases/latest/download/ccfw_Darw
 > [!NOTE]
 > This example is for macOS (Apple Silicon). For details, please refer to [Releases](https://github.com/2754github/ccfw/releases).
 
+## Quick Start
+
+To try it out:
+
+```sh
+ccfw
+```
+
+---
+
+You can start by generating a sample `.ccfw/settings.json`:
+
+```sh
+ccfw init
+```
+
+After customizing `.ccfw/settings.json`, you can manage Claude Code configuration files.
+
+```sh
+ccfw sync
+```
+
 ## Policy
 
 **"Don't train, define rules."**

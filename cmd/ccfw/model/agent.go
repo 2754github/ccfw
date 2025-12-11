@@ -71,7 +71,7 @@ func (a *agent) init(name string, options *agentOptions) error {
 	return nil
 }
 
-func (a *agent) path() string {
+func (a *agent) Path() string {
 	return filepath.Join(config.ClaudeAgentsDir, a.Name+config.ClaudeAgentFileExt)
 }
 
@@ -89,7 +89,7 @@ description: %s
 `, a.Name, description)
 }
 
-func (a *agent) commandPath() string {
+func (a *agent) CommandPath() string {
 	return filepath.Join(
 		config.ClaudeCommandsDir,
 		a.CommandPrefix+a.Name+config.ClaudeCommandFileExt,
@@ -110,13 +110,13 @@ $ARGUMENTS
 }
 
 func WriteAgent(agent *agent) error {
-	err := file.Write(agent.path(), agent.markdown())
+	err := file.Write(agent.Path(), agent.markdown())
 	if err != nil {
 		return err
 	}
 
 	if agent.InvocationMode == agentInvocationModeCommand {
-		return file.Write(agent.commandPath(), agent.commandMarkdown())
+		return file.Write(agent.CommandPath(), agent.commandMarkdown())
 	}
 
 	return nil

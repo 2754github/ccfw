@@ -4,6 +4,7 @@ linters:
   disable:
     - depguard
     - err113
+    - funcorder
     - wrapcheck
     - wsl
     - wsl_v5
