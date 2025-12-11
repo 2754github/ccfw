@@ -1,22 +1,22 @@
-package main
+package jsonc
 
 import (
 	"encoding/json"
 )
 
-var _jsonc jsonc
-
-type jsonc struct{}
-
-func (j *jsonc) unmarshal(data []byte, v any) error {
-	return json.Unmarshal(j.toJSON(data), v)
+func Unmarshal(data []byte, v any) error {
+	return json.Unmarshal(toJSON(data), v)
 }
 
 // 改行文字のサポート状況
 //   - ❌CR（\r）
 //   - ✅LF（\n）
 //   - ✅CRLF（\r\n）
-func (j *jsonc) toJSON(data []byte) []byte { //nolint:cyclop,gocognit
+//
+// コメントのサポート状況
+//   - ✅シングルライン（// ...）
+//   - ❌マルチライン（/* ... */）
+func toJSON(data []byte) []byte { //nolint:cyclop,gocognit
 	var result []byte
 	escaped := false
 	inString := false

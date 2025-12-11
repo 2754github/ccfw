@@ -12,8 +12,12 @@ The `ccfw` CLI manages Claude Code configuration files using `.ccfw/settings.jso
   "version": 0,
   "agents": {
     "designer": {},
-    "implementer": {},
-    "reviewer": {}
+    "implementer": {
+      "commandPrefix": "y-"
+    },
+    "reviewer": {
+      "invocationMode": "auto"
+    }
   },
   "options": {
     "agents": {
@@ -35,8 +39,7 @@ The `ccfw` CLI manages Claude Code configuration files using `.ccfw/settings.jso
     │   └── reviewer.md
     └── commands/
         ├── x-designer.md
-        ├── x-implementer.md
-        └── x-reviewer.md
+        └── y-implementer.md
 ```
 
 ## Install

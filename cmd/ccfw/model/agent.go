@@ -1,17 +1,20 @@
-package main
+package model
 
 import (
 	"fmt"
 	"path/filepath"
 	"regexp"
 	"slices"
-	"strings"
+
+	"github.com/2754github/ccfw/cmd/ccfw/config"
+	"github.com/2754github/ccfw/cmd/ccfw/util/file"
+	"github.com/2754github/ccfw/cmd/ccfw/util/heredoc"
 )
 
 type agent struct {
 	agentOptions
 
-	ID string
+	Name string
 }
 
 type agentOptions struct {
@@ -20,51 +23,46 @@ type agentOptions struct {
 }
 
 const (
-	agentCommandPrefixDefault  = "x-"
-	agentInvocationModeDefault = "none"
-
 	agentInvocationModeAuto    = "auto"
 	agentInvocationModeCommand = "command"
 )
 
 var (
-	agentIDRegexp = regexp.MustCompile(`^[a-z-]+$`)
+	agentNameRegexp = regexp.MustCompile(`^[a-z-]+$`)
 
+	//nolint:gochecknoglobals
 	agentInvocationModes = []string{
 		agentInvocationModeAuto,
 		agentInvocationModeCommand,
 	}
 )
 
-func (a *agent) init(id string, options *agentOptions) error {
-	if a.ID == "" {
-		a.ID = id
+func (a *agent) init(name string, options *agentOptions) error {
+	if a.Name == "" {
+		a.Name = name
 	}
 
-	if !agentIDRegexp.MatchString(a.ID) {
-		return fmt.Errorf(".agents.%s.id=%q must match `%s`", id, a.ID, agentIDRegexp.String())
+	if !agentNameRegexp.MatchString(a.Name) {
+		return fmt.Errorf(
+			".agents.%s.name=%q must match `%s`",
+			name,
+			a.Name,
+			agentNameRegexp.String(),
+		)
 	}
 
 	if a.CommandPrefix == "" {
-		if options.CommandPrefix == "" {
-			a.CommandPrefix = agentCommandPrefixDefault
-		} else {
-			a.CommandPrefix = options.CommandPrefix
-		}
+		a.CommandPrefix = options.CommandPrefix
 	}
 
 	if a.InvocationMode == "" {
-		if options.InvocationMode == "" {
-			a.InvocationMode = agentInvocationModeDefault
-		} else {
-			a.InvocationMode = options.InvocationMode
-		}
+		a.InvocationMode = options.InvocationMode
 	}
 
 	if !slices.Contains(agentInvocationModes, a.InvocationMode) {
 		return fmt.Errorf(
 			".agents.%s.invocationMode=%q must be one of %q",
-			id,
+			name,
 			a.InvocationMode,
 			agentInvocationModes,
 		)
@@ -74,7 +72,7 @@ func (a *agent) init(id string, options *agentOptions) error {
 }
 
 func (a *agent) path() string {
-	return filepath.Join(claudeAgentsDir, a.ID+claudeAgentFileExt)
+	return filepath.Join(config.ClaudeAgentsDir, a.Name+config.ClaudeAgentFileExt)
 }
 
 func (a *agent) markdown() []byte {
@@ -83,43 +81,42 @@ func (a *agent) markdown() []byte {
 		description = "MUST BE USED "
 	}
 
-	return []byte(strings.TrimPrefix(fmt.Sprintf(`
+	return heredoc.Format(`
 ---
 name: %s
 description: %s
 ---
-
-# %s
-`, a.ID, description, a.ID), "\n"))
+`, a.Name, description)
 }
 
 func (a *agent) commandPath() string {
-	return filepath.Join(claudeCommandsDir, a.CommandPrefix+a.ID+claudeCommandFileExt)
+	return filepath.Join(
+		config.ClaudeCommandsDir,
+		a.CommandPrefix+a.Name+config.ClaudeCommandFileExt,
+	)
 }
 
 func (a *agent) commandMarkdown() []byte {
-	return []byte(strings.TrimPrefix(fmt.Sprintf(`
+	return heredoc.Format(`
 ---
 description: Invocate the %s subagent.
 argument-hint: <What you want to delegate to the %s subagent.>
 ---
 
-# %s
-
 Use the %s subagent to accomplish the following.
 
 $ARGUMENTS
-`, a.ID, a.ID, a.ID, a.ID), "\n"))
+`, a.Name, a.Name, a.Name)
 }
 
-func writeAgent(agent *agent) error {
-	err := _fs.write(agent.path(), agent.markdown())
+func WriteAgent(agent *agent) error {
+	err := file.Write(agent.path(), agent.markdown())
 	if err != nil {
 		return err
 	}
 
 	if agent.InvocationMode == agentInvocationModeCommand {
-		return _fs.write(agent.commandPath(), agent.commandMarkdown())
+		return file.Write(agent.commandPath(), agent.commandMarkdown())
 	}
 
 	return nil

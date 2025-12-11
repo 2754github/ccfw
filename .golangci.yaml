@@ -2,6 +2,7 @@ version: "2"
 linters:
   default: all
   disable:
+    - depguard
     - err113
     - wrapcheck
     - wsl
@@ -11,18 +12,14 @@ linters:
       ignore-names:
         - c
         - i
-        - id
         - v
+    revive:
+      rules:
+        - name: exported
+          disabled: true
+        - name: package-comments
+          disabled: true
   exclusions:
-    rules:
-      - linters:
-          - gochecknoglobals
-        path: cmd
-        text: "^(agentInvocationModes|_fs|_jsonc) "
-      - linters:
-          - revive
-        path: cmd
-        text: "^(package-comments):"
     paths:
       - _test.go
 formatters:
