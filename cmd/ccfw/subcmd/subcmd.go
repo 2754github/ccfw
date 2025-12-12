@@ -46,12 +46,12 @@ func Sync() {
 		panic(err)
 	}
 
-	agentsToRemove, err := file.List(config.ClaudeAgentsDir)
+	agentsToRemove, err := file.Paths(config.ClaudeAgentsDir)
 	if err != nil {
 		panic(err)
 	}
 
-	commandsToRemove, err := file.List(config.ClaudeCommandsDir)
+	commandsToRemove, err := file.Paths(config.ClaudeCommandsDir)
 	if err != nil {
 		panic(err)
 	}

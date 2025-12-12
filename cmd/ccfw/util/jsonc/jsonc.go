@@ -16,8 +16,10 @@ func Unmarshal(data []byte, v any) error {
 // コメントのサポート状況
 //   - ✅シングルライン（// ...）
 //   - ❌マルチライン（/* ... */）
-func toJSON(data []byte) []byte { //nolint:cyclop,gocognit
-	var result []byte
+//
+//nolint:cyclop,gocognit
+func toJSON(data []byte) []byte {
+	result := make([]byte, 0)
 	escaped := false
 	inString := false
 

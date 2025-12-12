@@ -75,7 +75,7 @@ You can start by generating a sample `.ccfw/settings.json`:
 ccfw init
 ```
 
-After customizing `.ccfw/settings.json`, you can manage Claude Code configuration files.
+After customizing `.ccfw/settings.json`, you can manage Claude Code configuration files:
 
 ```sh
 ccfw sync

@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 )
 
-// List returns an empty slice if the directory does not exist.
-func List(root string) ([]string, error) {
+// Paths returns an empty slice if the directory does not exist.
+func Paths(root string) ([]string, error) {
 	paths := make([]string, 0)
 
 	_, err := os.Stat(root)
