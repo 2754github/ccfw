@@ -2,6 +2,7 @@ package model
 
 import (
 	"fmt"
+	"slices"
 
 	"github.com/2754github/ccfw/cmd/ccfw/config"
 	"github.com/2754github/ccfw/cmd/ccfw/util/file"
@@ -51,4 +52,52 @@ func ReadSettings() (*settings, error) {
 	}
 
 	return &v, nil
+}
+
+func RemoveUntrackedFiles(settings *settings) error {
+	agents, err := file.Paths(config.ClaudeAgentsDir)
+	if err != nil {
+		return err
+	}
+
+	commands, err := file.Paths(config.ClaudeCommandsDir)
+	if err != nil {
+		return err
+	}
+
+	for _, agent := range settings.Agents {
+		agents = deleteElem(agents, agent.path())
+
+		if agent.hasCommand() {
+			commands = deleteElem(commands, agent.commandPath())
+		}
+	}
+
+	for _, path := range agents {
+		err := file.Remove(path)
+		if err != nil {
+			return err
+		}
+	}
+
+	for _, path := range commands {
+		err := file.Remove(path)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func deleteElem[T comparable](slice []T, elem T) []T {
+	c := make([]T, len(slice))
+	copy(c, slice)
+
+	i := slices.Index(c, elem)
+	if i != -1 {
+		c = slices.Delete(c, i, i+1)
+	}
+
+	return c
 }
