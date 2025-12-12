@@ -75,6 +75,10 @@ func (a *agent) Path() string {
 	return filepath.Join(config.ClaudeAgentsDir, a.Name+config.ClaudeAgentFileExt)
 }
 
+func (a *agent) HasCommand() bool {
+	return a.InvocationMode == agentInvocationModeCommand
+}
+
 func (a *agent) markdown() []byte {
 	description := ""
 	if a.InvocationMode == agentInvocationModeAuto {
@@ -115,7 +119,7 @@ func WriteAgent(agent *agent) error {
 		return err
 	}
 
-	if agent.InvocationMode == agentInvocationModeCommand {
+	if agent.HasCommand() {
 		return file.Write(agent.CommandPath(), agent.commandMarkdown())
 	}
 

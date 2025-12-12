@@ -39,6 +39,7 @@ func Init() {
 	}
 }
 
+//nolint:cyclop
 func Sync() {
 	settings, err := model.ReadSettings()
 	if err != nil {
@@ -58,7 +59,9 @@ func Sync() {
 	for _, agent := range settings.Agents {
 		agentsToRemove = deleteElem(agentsToRemove, agent.Path())
 
-		commandsToRemove = deleteElem(commandsToRemove, agent.CommandPath())
+		if agent.HasCommand() {
+			commandsToRemove = deleteElem(commandsToRemove, agent.CommandPath())
+		}
 
 		err := model.WriteAgent(&agent)
 		if err != nil {
